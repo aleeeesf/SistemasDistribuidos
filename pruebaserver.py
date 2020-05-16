@@ -34,7 +34,7 @@ def anadir():
 
 
 @post('/modify')
-def anadir():
+def modificar():
 	lista_aux = {'Identificador': request.json.get('Identificador'), 'num_plazas':request.json.get('num_plazas')}
 	print(lista_aux['Identificador'])
 	encontrado = False
@@ -53,6 +53,23 @@ def anadir():
 	for i in habitacion:
 		print (i)
 
+
+@get('/listado')
+def mostrar_habitaciones():
+	return dict(dict = habitacion)
+
+@get('/conshabit/<id>')
+def consultar_habitacion(id):
+
+	encontrado = False
+	for i in habitacion:
+		if (i['Identificador'] == id):
+			print(i)
+			encontrado = True
+			return dict (dict = i)
+
+	if(encontrado == False):
+		return dict (dict = {'Identificador': 'no encontrado'})
 
 
 
