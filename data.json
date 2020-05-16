@@ -1,1 +1,1 @@
-{"Habitacion": [{"Identificador" : "14145", "num_plazas" : 12},{"Identificador" : "1613", "num_plazas" : 14},{"Identificador" : "120", "num_plazas" : 3}]}
+[{"Identificador": "120", "num_plazas": "3", "equipamiento": "cortinas", "ocupada": "no"}, {"Identificador": "1613", "num_plazas": "15", "equipamiento": "wifi, radio", "ocupada": "no"}, {"Identificador": "14145", "num_plazas": "4", "equipamiento": "televisor, cama", "ocupada": "si"}, {"Identificador": "1630", "num_plazas": "4", "equipamiento": "televisor", "ocupada": "no"}]

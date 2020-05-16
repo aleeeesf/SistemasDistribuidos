@@ -1,9 +1,5 @@
 from bottle import Bottle, run, route, post, get, request
 import json
-
-
-habitacion = [{'Identificador' : '14145', 'num_plazas' : '12', 'equipamiento': 'televisor, wi-fi', 'ocupada':'si'},{'Identificador' : '1613', 'num_plazas' : '14', 'equipamiento': 'cama', 'ocupada':'si'},{'Identificador' : '120', 'num_plazas' : '3', 'equipamiento':'cortinas', 'ocupada':'no'}]
-
 #@get('/habitacion/<id>')
 #def devolver_identificador(id):
 
@@ -12,6 +8,9 @@ habitacion = [{'Identificador' : '14145', 'num_plazas' : '12', 'equipamiento': '
 
 @post('/send')
 def anadir():
+	with open('data.json', 'r') as fichero:
+		habitacion = json.load(fichero)
+
 	lista_aux = {'Identificador': request.json.get('Identificador'), 'num_plazas':request.json.get('num_plazas'), 'equipamiento':request.json.get('equipamiento'), 'ocupada':request.json.get('ocupada')}
 	
 	encontrado = False
@@ -29,13 +28,18 @@ def anadir():
 
 	else:
 		print("Identificador repetido")
-		
+	
+	with open('data.json', 'w') as fichero:
+		json.dump(habitacion,fichero)	
 		
 
 
 
 @post('/modify/<id>')
 def modificar(id):
+	with open('data.json', 'r') as fichero:
+		habitacion = json.load(fichero)
+
 	lista_aux = {'Identificador': id, 'num_plazas':request.json.get('num_plazas'), 'equipamiento':request.json.get('equipamiento'), 'ocupada':request.json.get('ocupada')}
 	print(lista_aux['Identificador'])
 	encontrado = False
@@ -57,17 +61,24 @@ def modificar(id):
 	for i in habitacion:
 		print (i)
 
+	with open('data.json', 'w') as fichero:
+		json.dump(habitacion,fichero)
+
 
 
 @get('/listado')
 def mostrar_habitaciones():
+	with open('data.json', 'r') as fichero:
+		habitacion = json.load(fichero)
 	return dict(dict = habitacion)
 
 
 
 @get('/conshabit/<id>')
 def consultar_habitacion(id):
-
+	with open('data.json', 'r') as fichero:
+		habitacion = json.load(fichero)
+	
 	encontrado = False
 	for i in habitacion:
 		if (i['Identificador'] == id):
@@ -82,7 +93,8 @@ def consultar_habitacion(id):
 
 @get('/listaocup/<decision>')
 def mostrar_ocupadas(decision):
-	
+	with open('data.json', 'r') as fichero:
+		habitacion = json.load(fichero)
 	lista = []
 	print(decision)
 	encontrado = False
@@ -102,6 +114,8 @@ def mostrar_ocupadas(decision):
 
 @get('/existe/<id>')
 def existir(id):
+	with open('data.json', 'r') as fichero:
+		habitacion = json.load(fichero)
 
 	encontrado = False
 	for i in habitacion:
@@ -117,6 +131,8 @@ def existir(id):
 
 @get('/plazas/<num>/<num2>')
 def plazas_habitacion(num,num2):
+	with open('data.json', 'r') as fichero:
+		habitacion = json.load(fichero)
 	
 	lista = []
 	
@@ -137,7 +153,10 @@ def plazas_habitacion(num,num2):
 
 @post('/remove/<id>')
 def modificar(id):
-
+	
+	with open('data.json', 'r') as fichero:
+		habitacion = json.load(fichero)
+	
 	encontrado = False
 
 	for i in habitacion:
@@ -154,5 +173,7 @@ def modificar(id):
 	for i in habitacion:
 		print (i)
 
+	with open('data.json', 'w') as fichero:
+		json.dump(habitacion,fichero)
 
 run(host = 'localhost', port = 8081, debug = True)

@@ -37,16 +37,18 @@ while check:
 			print("*****************************************\n")
 
 		else:
+			
 			plazas = input("Introduce plazas de la habitacion: ")
 			equip = input("Introduce lista de equipamientos: ")
 			ocup = input("¿Ocupada? (si/no): ")
 
 			if(ocup != "si" and ocup != "no"):
-				print("Error, respuesta distinta a si o no")
+				print("\n***Error, respuesta distinta a si o no***")
 
 			else:
 				lista = {'Identificador' : num_hab,'num_plazas' : plazas, 'equipamiento': equip, 'ocupada': ocup}
 				requests.post(page, json = lista)
+				
 				print("\n*****************************************")
 				print("\n\tAÑADIDA CORRECTAMENTE\n")
 				print("*****************************************\n")
@@ -61,33 +63,35 @@ while check:
 			print("\n************************************************")
 			print("\n\tNO SE HA ENCONTRADO LA HABITACION\n")
 			print("************************************************\n")
+		
 		else:
 			plazas = input("Introduce plazas de la habitacion: ")
 			equip = input("Introduce lista de equipamientos: ")
 			ocup = input("¿Ocupada? (si/no): ")
 			lista = {'num_plazas' : plazas, 'equipamiento': equip, 'ocupada': ocup}
 			requests.post(modify+num_hab, json = lista)
+			
 			print("\n**********************************************")
 			print("\n\tSE HA ACTUALIZADO CORRECTAMENTE\n")
 			print("**********************************************\n")
+
 
 	elif (response == '3'):
 		r = requests.get(url = consulta)
 		message = r.json()
 		
 		print("\n\t~~~~~DATOS DE HABITACIONES~~~~~\n")
-		print("==========================================")
+		
 		
 		for i in message['dict']:
+			print("==========================================")
 			print ("Id. habitación: "+i['Identificador'])
 			print ("Num. plazas disponibles: "+i['num_plazas'])
 			print ("Lista de equipamientos: "+i['equipamiento'])
 			print ("Ocupada: "+i['ocupada'])
-			print ("==========================================")
+			print ("==========================================\n")
 
-		print("\n")
 		
-
 
 	elif (response == '4'):
 		resp = input("Introduce el identificador de la habitacion: ")
@@ -96,12 +100,12 @@ while check:
 		message = r.json()
 		
 		if (message['dict']['Identificador'] == 'no encontrado'):
-			print ("==========================================")
+			print ("\n==========================================")
 			print ("\n\t!IDENTIFICADOR NO ENCONTRADO!\n")
 			print ("==========================================\n")
 		
 		else:
-			print( "==========================================")
+			print( "\n==========================================")
 			print ("Id. habitación: "+message['dict']['Identificador'])
 			print ("Num. plazas disponibles: "+message['dict']['num_plazas'])
 			print ("Lista de equipamientos: "+message['dict']['equipamiento'])
@@ -114,21 +118,21 @@ while check:
 	elif (response == '5'):
 		
 		print("¿Que desea: ?")
-		resp = input("1. Ocupadas (Respoder si)\n2. No ocupadas(Respoder no)\n")
+		resp = input("1. Ocupadas (Respoder si)\n2. No ocupadas (Respoder no)\n")
 
 		if(resp != 'si' and resp != 'no'):
-			print("Error, respuesta diferente a si o no")
+			print("\n***Error, respuesta diferente a si o no***")
 		else:
 			r = requests.get(url = habocupadas+resp)
 			message = r.json()
 			
 			for i in message['dict']:
 				if (i['Identificador'] == 'no encontrado'):
-					print ("==========================================")
+					print ("\n==========================================")
 					print ("\n\t¡ NO SE HAN ENCONTRADO HABITACIONES !\n")
 					print ("==========================================\n")
 				else:
-					print( "==========================================")
+					print( "\n==========================================")
 					print ("Id. habitación: "+i['Identificador'])
 					print ("Num. plazas disponibles: "+i['num_plazas'])
 					print ("Lista de equipamientos: "+i['equipamiento'])
@@ -148,9 +152,10 @@ while check:
 			r = requests.get(url = plaza+resp1+"/"+resp2)
 			message = r.json()
 			
+			print("\n")
 			for i in message['dict']:
 				if (i['Identificador'] == 'no encontrado'):
-					print ("==========================================")
+					print ("\n==========================================")
 					print ("\n\t¡ NO SE HAN ENCONTRADO HABITACIONES !\n")
 					print ("==========================================\n")
 				else:
