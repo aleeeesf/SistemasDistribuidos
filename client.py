@@ -1,6 +1,8 @@
 import requests
 
-page = "http://localhost:8080/habitacion/14145"
+page = "http://localhost:8081/send"
+modify = "http://localhost:8081/modify"
+
 
 print("Elige la opcion que deseas realizar:")
 print("1. Dar de alta una nueva habitacion")
@@ -14,12 +16,19 @@ while True:
 	response = input("Introduce respuesta: ")
 	
 	if (response == '1'):
-		r = requests.get(url = page)
-		message = r.content
-		print(message)
+		num_hab = input("Introduce identificador de la habitacion: ")
+		plazas = input("\nIntroduce plazas de la habitacion: ")
+		lista = {'Identificador' : num_hab,'num_plazas' : plazas}
+		requests.post(page, json = lista)
+		print(lista)
 
-	elif (response == 2):
-		print("Respuesta no valida")
+	elif (response == '2'):
+		num_hab = input("Introduce identificador de la habitacion: ")
+		plazas = input("Introduce plazas de la habitacion: ")
+		lista = {'Identificador' : num_hab,'num_plazas' : plazas}
+		requests.post(modify, json = lista)
+		print(lista)
+
 
 
 	elif (response == 3):
@@ -28,7 +37,7 @@ while True:
 
 	elif (response == 4):
 		resp = input("Introduce el identificador de la habitacion:")
-		
+
 
 
 	elif (response == 5):
@@ -36,7 +45,9 @@ while True:
 
 	else:
 		print("Respuesta no valida")
-
+		r = requests.get(url = page)
+		message = r.content
+		print(message)
 
 
 
