@@ -2,7 +2,7 @@ from bottle import Bottle, run, route, post, get, request
 import json
 
 
-habitacion = [{'Identificador' : '14145', 'num_plazas' : '12'},{'Identificador' : '1613', 'num_plazas' : '14'},{'Identificador' : '120', 'num_plazas' : '3'}]
+habitacion = [{'Identificador' : '14145', 'num_plazas' : '12', 'equipamiento': 'televisor, wi-fi', 'ocupada':'si'},{'Identificador' : '1613', 'num_plazas' : '14', 'equipamiento': 'cama', 'ocupada':'si'},{'Identificador' : '120', 'num_plazas' : '3', 'equipamiento':'cortinas', 'ocupada':'no'}]
 
 #@get('/habitacion/<id>')
 #def devolver_identificador(id):
@@ -12,7 +12,7 @@ habitacion = [{'Identificador' : '14145', 'num_plazas' : '12'},{'Identificador' 
 
 @post('/send')
 def anadir():
-	lista_aux = {'Identificador': request.json.get('Identificador'), 'num_plazas':request.json.get('num_plazas')}
+	lista_aux = {'Identificador': request.json.get('Identificador'), 'num_plazas':request.json.get('num_plazas'), 'equipamiento':request.json.get('equipamiento'), 'ocupada':request.json.get('ocupada')}
 	
 	encontrado = False
 
@@ -30,12 +30,13 @@ def anadir():
 	else:
 		print("Identificador repetido")
 		
+		
 
 
 
-@post('/modify')
-def modificar():
-	lista_aux = {'Identificador': request.json.get('Identificador'), 'num_plazas':request.json.get('num_plazas')}
+@post('/modify/<id>')
+def modificar(id):
+	lista_aux = {'Identificador': id, 'num_plazas':request.json.get('num_plazas'), 'equipamiento':request.json.get('equipamiento'), 'ocupada':request.json.get('ocupada')}
 	print(lista_aux['Identificador'])
 	encontrado = False
 
@@ -50,13 +51,19 @@ def modificar():
 		habitacion.append(lista_aux)
 		print("Actualizado correctamente")
 
+	else:
+		print("NO se ha encontrado la habitacion")
+
 	for i in habitacion:
 		print (i)
+
 
 
 @get('/listado')
 def mostrar_habitaciones():
 	return dict(dict = habitacion)
+
+
 
 @get('/conshabit/<id>')
 def consultar_habitacion(id):
@@ -71,6 +78,81 @@ def consultar_habitacion(id):
 	if(encontrado == False):
 		return dict (dict = {'Identificador': 'no encontrado'})
 
+
+
+@get('/listaocup/<decision>')
+def mostrar_ocupadas(decision):
+	
+	lista = []
+	print(decision)
+	encontrado = False
+	for i in habitacion:
+		if (i['ocupada'] == decision):
+			encontrado = True
+			lista.append(i)
+		
+
+	print(lista)
+	if(encontrado == False):
+		return dict (dict = [{'Identificador': 'no encontrado'}])
+
+	else:
+		return dict (dict = lista)
+
+
+@get('/existe/<id>')
+def existir(id):
+
+	encontrado = False
+	for i in habitacion:
+		if (i['Identificador'] == id):
+			encontrado = True
+
+
+	if(encontrado == False):
+		return "NO encontrado"
+	else:
+		return "SI encontrado"
+
+
+@get('/plazas/<num>/<num2>')
+def plazas_habitacion(num,num2):
+	
+	lista = []
+	
+	encontrado = False
+	for i in habitacion:
+		if (int(i['num_plazas']) >= int(num) and int(i['num_plazas']) <= int(num2)):
+			encontrado = True
+			lista.append(i)
+		
+
+	print(lista)
+	if(encontrado == False):
+		return dict (dict = [{'Identificador': 'no encontrado'}])
+
+	else:
+		return dict (dict = lista)
+
+
+@post('/remove/<id>')
+def modificar(id):
+
+	encontrado = False
+
+	for i in habitacion:
+		if (i['Identificador'] == id):
+			habitacion.remove(i)
+			encontrado = True
+
+	if(encontrado == True):
+		print("Borrado correctamente")
+
+	else:
+		print("NO se ha encontrado la habitacion")
+
+	for i in habitacion:
+		print (i)
 
 
 run(host = 'localhost', port = 8081, debug = True)
