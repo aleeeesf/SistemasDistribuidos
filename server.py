@@ -1,12 +1,42 @@
 from bottle import Bottle, run, route, post, get, request
+import os.path as path
 import json
-#@get('/habitacion/<id>')
-#def devolver_identificador(id):
+import os
 
-	#file = open('prebajson.json',)
-	#data = json.load(file)
+
+#Comprobación del fichero data.json
+
+if path.exists('data.json'):
+	f = open('data.json', 'r+')
+	contenido = f.read()
+	if contenido=='':
+		f.write("[]")
+	f.close()
+else:
+	os.system("touch data.json")
+	f = open('data.json', 'w')
+	f.write("[]")
+	f.close()
+
+
+#Backup del archivo data.json
+
+response = input("¿Desea hacer un backup?: (si/no) ")
+
+if response == 'si':
+	f = open('data.json', 'r')
+	contenido = f.read()
+	os.system("touch backup.json")
+	g = open('backup.json', 'w')
+	g.write(contenido)
+	g.close()
+	f.close()
 
 no_encontrado = [{'Identificador': 'no encontrado'}]
+
+
+
+#Definición de rutas
 
 @post('/send')
 def anadir():
@@ -25,7 +55,6 @@ def anadir():
 
 	if(encontrado == False):
 			habitacion.append(lista_aux)
-			#print(habitacion)
 			print("Añadido correctamente")
 
 	else:
@@ -46,8 +75,6 @@ def modificar(id):
 	print(lista_aux['Identificador'])
 	encontrado = False
 
-	#d1 = json.dumps(habitacion) #Lo convierte a un diccionario de json
-	#d2 = json.loads(d1)
 	for i in habitacion:
 		if (i['Identificador'] == lista_aux['Identificador']):
 			habitacion.remove(i)
@@ -59,9 +86,6 @@ def modificar(id):
 
 	else:
 		print("NO se ha encontrado la habitacion")
-
-	#for i in habitacion:
-		#print (i)
 
 	with open('data.json', 'w') as fichero:
 		json.dump(habitacion,fichero)
@@ -84,7 +108,6 @@ def consultar_habitacion(id):
 	encontrado = False
 	for i in habitacion:
 		if (i['Identificador'] == id):
-			#print(i)
 			encontrado = True
 			return dict (dict = i)
 
@@ -98,15 +121,13 @@ def mostrar_ocupadas(decision):
 	with open('data.json', 'r') as fichero:
 		habitacion = json.load(fichero)
 	lista = []
-	#print(decision)
+
 	encontrado = False
 	for i in habitacion:
 		if (i['ocupada'] == decision):
 			encontrado = True
 			lista.append(i)
-		
-
-	#print(lista)
+	
 	if(encontrado == False):
 		return dict (dict = no_encontrado)
 
@@ -127,6 +148,7 @@ def existir(id):
 
 	if(encontrado == False):
 		return "NO encontrado"
+	
 	else:
 		return "SI encontrado"
 
@@ -137,15 +159,13 @@ def plazas_habitacion(num,num2):
 		habitacion = json.load(fichero)
 	
 	lista = []
-	
 	encontrado = False
+	
 	for i in habitacion:
 		if (int(i['num_plazas']) >= int(num) and int(i['num_plazas']) <= int(num2)):
 			encontrado = True
 			lista.append(i)
 		
-
-	#print(lista)
 	if(encontrado == False):
 		return dict (dict = no_encontrado)
 
@@ -172,10 +192,10 @@ def modificar(id):
 	else:
 		print("NO se ha encontrado la habitacion")
 
-	#for i in habitacion:
-		#print (i)
 
 	with open('data.json', 'w') as fichero:
 		json.dump(habitacion,fichero)
+
+
 
 run(host = 'localhost', port = 8081, debug = True)

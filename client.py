@@ -130,9 +130,9 @@ while check:
 			
 			for i in message['dict']:
 				if (i['Identificador'] == 'no encontrado'):
-					print ("\n===================================================")
+					print ("\n====================================================")
 					print ("\n\t¡ NO SE HAN ENCONTRADO HABITACIONES !\n")
-					print ("===================================================\n")
+					print ("====================================================\n")
 				else:
 					print( "\n==========================================")
 					print ("Id. habitación: "+i['Identificador'])
@@ -149,9 +149,9 @@ while check:
 		resp2 = input("Limite superior de plazas: ")
 
 		if(int(resp1) > int(resp2)):
-			print ("==========================================\n")
-			print ("\n\t*** Error, intervalo mal introducido ***")
-			print ("==========================================\n")
+			print ("\n========================================================")
+			print ("\n\t*** Error, intervalo mal introducido ***\n")
+			print ("========================================================\n")
 		else:
 			r = requests.get(url = plaza+resp1+"/"+resp2)
 			message = r.json()
@@ -159,9 +159,9 @@ while check:
 			print("\n")
 			for i in message['dict']:
 				if (i['Identificador'] == 'no encontrado'):
-					print ("\n==========================================")
+					print ("\n========================================================")
 					print ("\n\t¡ NO SE HAN ENCONTRADO HABITACIONES !\n")
-					print ("==========================================\n")
+					print ("========================================================\n")
 				else:
 					print( "==========================================")
 					print ("Id. habitación: "+i['Identificador'])
