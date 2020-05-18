@@ -197,7 +197,7 @@ while check:
 
 	else:
 		print("Respuesta no valida")
-		print(message)
+		
 
 
 
