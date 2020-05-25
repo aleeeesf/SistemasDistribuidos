@@ -1,0 +1,1 @@
+Tan solo hay que mejorar el chat TCP, el chat UDP solo estábamos probandolo con hilos, no es necesario hacerlo para la práctica.
