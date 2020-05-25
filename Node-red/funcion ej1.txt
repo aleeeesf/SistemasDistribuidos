@@ -1,0 +1,23 @@
+var array = []
+var longitud_a = context.get("a");
+var longitud_b =  context.get("b");
+context.set("a",msg.req.body.a.length);
+context.set("b",msg.req.body.b.length);
+
+if(longitud_a >= longitud_b){
+    
+    for(var i = 0; i < longitud_a; i++){
+        if(i > longitud_b - 1) array[i] = msg.req.body.a[i]
+        else array[i] = msg.req.body.a[i] + msg.req.body.b[i];
+        
+    }
+}
+else{
+    for(var j = 0; j < longitud_b; j++){
+        if(j > longitud_a -1) array[j] = msg.req.body.b[j];
+        else array[j] = msg.req.body.a[j] + msg.req.body.b[j];
+    }
+}
+
+msg.payload = {"resultado":array}
+return msg;
